@@ -1,0 +1,23 @@
+{
+  "name": "mindcare-chatbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/dialogflow": "^6.8.0",
+    "@google-cloud/language": "^6.5.0",
+    "@google/generative-ai": "^0.20.0",
+    "axios": "^1.7.7",
+    "body-parser": "^1.20.3",
+    "dialogflow": "^4.0.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "uuid": "^10.0.0"
+  }
+}

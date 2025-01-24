@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindCare Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .image-div img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .input-div {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .input-div textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: none;
+            overflow: hidden;
+            min-height: 40px;
+            transition: height 0.3s ease;
+        }
+
+        .input-div button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-div button:hover {
+            background-color: #0056b3;
+        }
+
+        .response-div {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            color: #333;
+            min-height: 40px;
+            /* Optional minimum height */
+            display: flex;
+            align-items: center;
+            /* Center vertically */
+        }
+    </style>
+    <script>
+        function adjustHeight(element) {
+            element.style.height = 'auto'; // Reset height to auto
+            element.style.height = element.scrollHeight + 'px'; // Set height to scrollHeight
+        }
+
+        function sendMessage() {
+            const message = document.querySelector('.input-div textarea').value;
+
+            if (!message.trim()) {
+                alert("Please enter a message.");
+                return;
+            }
+
+            fetch('http://localhost:3000/message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const responseDiv = document.querySelector('.response-div');
+                    responseDiv.innerText = 'Lasha: ' + (data.fulfillmentText || data.error || "No response");
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    const responseDiv = document.querySelector('.response-div');
+                    responseDiv.innerText = 'There was an error with the server: ' + error.message;
+                });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default action (new line in textarea)
+                sendMessage(); // Call the sendMessage function
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="image-div">
+            <img src="img.png" alt="MindCare Image">
+        </div>
+        <div class="text-div">
+            <h2>MindCare Chatbot</h2>
+        </div>
+        <div class="input-div">
+            <textarea placeholder="How Can I Assist You !!!" oninput="adjustHeight(this)"
+                onkeypress="handleKeyPress(event)"></textarea>
+            <button type="button" onclick="sendMessage()">Send</button>
+        </div>
+        <div class="response-div">
+            <span id="botResponse">My Response</span>
+        </div>
+    </div>
+</body>
+
+</html>
