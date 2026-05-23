@@ -1,6 +1,6 @@
 const dialogflow = require('@google-cloud/dialogflow');
 const sessionClient = new dialogflow.SessionsClient();
-const projectId = 'genai-437220'; // Replace with your Google Cloud project ID
+const projectId = process.env.DIALOGFLOW_PROJECT_ID || 'genai-437220'; // Replace with your Google Cloud project ID
 
 async function detectIntent(sessionId, query) {
   try {

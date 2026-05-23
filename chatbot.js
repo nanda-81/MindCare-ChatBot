@@ -4,21 +4,17 @@
  * $ npm install @google/generative-ai
  */
 require('dotenv').config();
-const axios = require('axios');
-const detectIntent = require('./dialogflow');
 const {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
 } = require("@google/generative-ai");
 
-const url = 'https://generativelanguage.googleapis.com/v1beta2/text:generate';
-
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash-002",
+  model: "gemini-1.5-flash",
 });
 
 const generationConfig = {
@@ -26,7 +22,6 @@ const generationConfig = {
   topP: 0.95,
   topK: 40,
   maxOutputTokens: 8192,
-  responseMimeType: "text/plain",
 };
 
 async function getChatbotResponse(userMessage) {
